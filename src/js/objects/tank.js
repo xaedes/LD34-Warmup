@@ -7,7 +7,7 @@ define(['phaser'], function(Phase) {
         Phaser.Group.call(this, game, game.world, 'tank', true, true, Phaser.Physics.ARCADE);
         // Phaser.Group.call(this, game, game.world, 'tank', false, true, Phaser.Physics.ARCADE);
 
-        this.frame_rate = 2;
+        this.frame_rate = 8;
         this.sprite = new Phaser.Sprite(game, x, y, 'tank', 0);
         this.add(this.sprite);
         this.sprite.animations.add("down",[0,1],this.frame_rate,true);
@@ -18,10 +18,10 @@ define(['phaser'], function(Phase) {
         this.sprite.animations.add("right-shoot",[4,8],this.frame_rate,true);
         this.sprite.animations.add("up",[10,11],this.frame_rate,true);
         this.sprite.animations.add("up-shoot",[10,6],this.frame_rate,true);
-        this.facing = "right"
-        this.shooting = false;
-        this.moving = false;
-        this.face("right");
+        this._facing = "right"
+        this._shooting = false;
+        this._moving = false;
+        this.manage_animation();
 
         // crisp pixels
         this.sprite.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
@@ -33,6 +33,37 @@ define(['phaser'], function(Phase) {
 
     Tank.prototype = Object.create(Phaser.Group.prototype);
     Tank.prototype.constructor = Tank;
+
+    Object.defineProperty(Tank.prototype, "moving", {
+        get: function () {
+            return this._moving;
+        },
+        set: function (value) {
+            this._moving = value;
+            this.manage_animation();
+        }
+    });
+    Object.defineProperty(Tank.prototype, "shooting", {
+        get: function () {
+            return this._shooting;
+        },
+        set: function (value) {
+            this._shooting = value;
+            this.manage_animation();
+        }
+    });
+    Object.defineProperty(Tank.prototype, "facing", {
+        get: function () {
+            return this._facing;
+        },
+        set: function (value) {
+            if (["down","right","left","up"].indexOf(value) != -1){
+                this._facing = value;
+                this.manage_animation();
+            }
+        }
+    });
+
 
     Tank.prototype.current_animation_name = function () {
         var frame = this.facing;
@@ -49,15 +80,6 @@ define(['phaser'], function(Phase) {
             this.sprite.animations.stop();
         }
     };
-
-    Tank.prototype.face = function (direction) {
-        if (["down","right","left","up"].indexOf(direction) != -1){
-            this.facing = direction;
-            this.manage_animation();
-        }
-    };
-
-
 
     // Tank.prototype.update = function () {
     // };
