@@ -1,6 +1,7 @@
 'use strict';
 
-define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui', 'objects/bullets'], function(Tanks,Tank,Bullseye,Ui,Bullets) {
+define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui', 'objects/bullets', 'objects/explosions'], 
+    function(Tanks,Tank,Bullseye,Ui,Bullets,Explosions) {
     function GameplayState() {}
 
     GameplayState.prototype = {
@@ -14,6 +15,7 @@ define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui', 'object
             this.world.scale.set(2);
             this.tanks = new Tanks(this.game);
             this.bullets = new Bullets(this.game);
+            this.explosions = new Explosions(this.game);
             this.ui = new Ui(this.game);
             this.bullseye = new Bullseye(this.game,0,0);
             this.ui.add(this.bullseye);
@@ -43,7 +45,10 @@ define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui', 'object
             if(this.game.input.mousePointer.isDown){
                 this.tank.face_turret(this.game.input.x/2, this.game.input.y/2);
                 this.tank.fire(function(){
-                    this.bullets.add_bullet(this.tank.wheels.x,this.tank.wheels.y).fire(this.game.input.x/2, this.game.input.y/2);
+                    this.bullets.add_bullet(this.tank.wheels.x,this.tank.wheels.y)
+                                .fire(this.game.input.x/2, this.game.input.y/2, function(bullet,x,y){
+                                    this.explosions.add_explosion(x,y,bullet.rotation);
+                                }, this);
                 },this);
             } else {
                 this.tank.stop_fire();

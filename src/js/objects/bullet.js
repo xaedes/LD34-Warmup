@@ -30,7 +30,7 @@ define(['phaser'], function(Phase) {
         this.animations.play("bullet");
     };
 
-    Bullet.prototype.fire = function (target_x, target_y) {
+    Bullet.prototype.fire = function (target_x, target_y, callback, callback_obj) {
         this.target_x = target_x;
         this.target_y = target_y;
         var dx = this.target_x - this.x;
@@ -49,6 +49,7 @@ define(['phaser'], function(Phase) {
                 .to({x:this.target_x,y:this.target_y}, 1000 * dur, "Linear");
         move_tween.onComplete.add(function() {
             this.destroy();
+            callback.call(callback_obj,this,this.target_x,this.target_y);
         }, this);
         alpha_tween.start();
         height_tween.start();
