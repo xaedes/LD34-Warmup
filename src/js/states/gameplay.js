@@ -1,6 +1,6 @@
 'use strict';
 
-define([], function() {
+define(['../objects/tank'], function(Tank) {
     function GameplayState() {}
 
     GameplayState.prototype = {
@@ -10,6 +10,7 @@ define([], function() {
             // add mouse controlled bullseye
             // click causes tank to shoot
             // bullet flies in parable, height causes upscaling, simply use tween?
+            var tank = new Tank(this.game, 100, 100);
         }
     };
 
