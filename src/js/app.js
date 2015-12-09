@@ -17,7 +17,7 @@ define([
 
     Game.prototype = {
         start: function() {
-            var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game-area');
+            var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game-area', null, false, false);
 
             game.state.add('boot', BootState);
             game.state.add('preload', PreloadState);
