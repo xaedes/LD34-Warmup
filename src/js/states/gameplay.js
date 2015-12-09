@@ -1,6 +1,6 @@
 'use strict';
 
-define(['objects/tanks','../objects/tank'], function(Tanks,Tank) {
+define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui'], function(Tanks,Tank,Bullseye,Ui) {
     function GameplayState() {}
 
     GameplayState.prototype = {
@@ -11,6 +11,9 @@ define(['objects/tanks','../objects/tank'], function(Tanks,Tank) {
             // click causes tank to shoot
             // bullet flies in parable, height causes upscaling, simply use tween?
             this.tanks = new Tanks(this.game);
+            this.ui = new Ui(this.game);
+            this.bullseye = new Bullseye(this.game,0,0);
+            this.ui.add(this.bullseye);
             this.tank = this.tanks.add_tank(100,100);
 
             this.cursors = this.input.keyboard.createCursorKeys();
@@ -35,6 +38,8 @@ define(['objects/tanks','../objects/tank'], function(Tanks,Tank) {
             // if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
             //     this.weapons[this.currentWeapon].fire(this.player);
             // }
+            this.bullseye.x = this.game.input.x;
+            this.bullseye.y = this.game.input.y;
         }
     };
 

@@ -3,10 +3,7 @@
 define(['phaser'], function(Phase) {
     function Tank(game, x, y) {
         // super constructor
-        // game, parent, name, addToStage, enableBody, physicsBodyType
-        // Phaser.Group.call(this, game, game.world, 'tank', true, true, Phaser.Physics.ARCADE);
         Phaser.Sprite.call(this, game, x, y, 'tank', 0);
-        // Phaser.Group.call(this, game, game.world, 'tank', false, true, Phaser.Physics.ARCADE);
 
         this.frame_rate = 8;
         this.animations.add("down",[0,1],this.frame_rate,true);
