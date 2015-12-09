@@ -4,13 +4,15 @@ define([
     'states/preload',
     'states/main_intro',
     'states/main_menu',
-    'states/level_master'],
+    'states/level_master',
+    'states/gameplay'],
     function(Phaser,
              BootState,
              PreloadState,
              MainIntroState,
              MainMenuState,
-             LevelMasterState) {
+             LevelMasterState,
+             GameplayState) {
     function Game() {}
 
     Game.prototype = {
@@ -22,6 +24,7 @@ define([
             game.state.add('main-intro', MainIntroState);
             game.state.add('main-menu', MainMenuState);
             game.state.add('level-master', LevelMasterState);
+            game.state.add('gameplay', GameplayState);
             // game.state.add('level-intro', MainIntroState);
             // game.state.add('level-round', LevelRoundState);
 
