@@ -9,13 +9,13 @@ define(['phaser'], function(Phaser) {
 
             var title_text = this.game.add.text(0,0, 
                 "Tanks", 
-                {font: "60px shmupfont", fill: "#ffffff", stroke: '#000000', strokeThickness: 3});
+                {font: "200px shmupfont", fill: "#ffffff", stroke: '#000000', strokeThickness: 3});
             title_text.anchor.setTo(0.5, 0.5);
             title_text.wordWrap = true;
             title_text.wordWrapWidth = (0.95 * this.game.world.width);
             title_text.alpha = 1
 
-            var subtitle_text = this.game.add.text(0,70, 
+            var subtitle_text = this.game.add.text(0,210, 
                 "[press ENTER to start]", 
                 {font: "18px shmupfont", fill: "#ffffff", stroke: '#000000', strokeThickness: 3});
             subtitle_text.anchor.setTo(0.5, 0.5);
@@ -45,17 +45,17 @@ define(['phaser'], function(Phaser) {
             var selectionFeedback = this.game.add.tween(this.subtitle_text.scale)
             .to({x:1.5 , y:1.5},500,"Elastic.easeOut");
             selectionFeedback.onComplete.add(function(){
-                var tweenMenuShrink = this.game.add.tween(this.menu)
-                        .to({x: 0, y: 0,alpha: 0.1}, 200);
+                var tweenMenuShrink = this.game.add.tween(this.menu.scale)
+                        .to({x: 0, y: 0}, 200);
 
-                var tweenFadeIn = this.game.add.tween(this.menu)
+                var tweenFadeOut = this.game.add.tween(this.menu)
                         .to({alpha: 0}, 200);
 
-                tweenFadeIn.onComplete.add(function() {
-                    this.game.state.start('level-master');
+                tweenFadeOut.onComplete.add(function() {
+                    this.game.state.start('gameplay');
                 }, this);
                 
-                tweenMenuShrink.chain(tweenFadeIn);
+                tweenFadeOut.start();                
                 tweenMenuShrink.start();                
             }, this)
             selectionFeedback.start()
