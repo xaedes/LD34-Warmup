@@ -1,6 +1,6 @@
 'use strict';
 
-define(['../objects/tank'], function(Tank) {
+define(['objects/tanks','../objects/tank'], function(Tanks,Tank) {
     function GameplayState() {}
 
     GameplayState.prototype = {
@@ -10,37 +10,26 @@ define(['../objects/tank'], function(Tank) {
             // add mouse controlled bullseye
             // click causes tank to shoot
             // bullet flies in parable, height causes upscaling, simply use tween?
-            this.tank = new Tank(this.game, 100, 100);
-            this.speed = 32;
-            this.physics.arcade.enable(this.tank.sprite);
-            this.tank.sprite.body.collideWorldBounds = true;
+            this.tanks = new Tanks(this.game);
+            this.tank = this.tanks.add_tank(100,100);
 
             this.cursors = this.input.keyboard.createCursorKeys();
         },
 
         update: function() {
-            this.tank.sprite.body.velocity.set(0);
             if (this.cursors.left.isDown) {
-                this.tank.facing = "left";
-                this.tank.moving = true;
-                this.tank.sprite.body.velocity.x = -this.speed;
+                this.tank.move("left");
             }
             else if (this.cursors.right.isDown) {
-                this.tank.facing = "right";
-                this.tank.moving = true;
-                this.tank.sprite.body.velocity.x = +this.speed;
+                this.tank.move("right");
             }
             else if (this.cursors.up.isDown) {
-                this.tank.facing = "up";
-                this.tank.moving = true;
-                this.tank.sprite.body.velocity.y = -this.speed;
+                this.tank.move("up");
             }
             else if (this.cursors.down.isDown) {
-                this.tank.facing = "down";
-                this.tank.moving = true;
-                this.tank.sprite.body.velocity.y = +this.speed;
+                this.tank.move("down");
             } else {
-                this.tank.moving = false;
+                this.tank.rest();
             }
 
             // if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
