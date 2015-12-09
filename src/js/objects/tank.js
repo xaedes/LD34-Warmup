@@ -4,13 +4,14 @@ define(['phaser'], function(Phase) {
     function Tank(game, x, y, parent) {
         // super constructor
         Phaser.Group.call(this, game, parent, 'tank', true, true, Phaser.Physics.ARCADE);
-
         this.wheels = new Phaser.Sprite(game, x, y, 'wheels', 0);
         this.turret = new Phaser.Sprite(game, x, y, 'turret', 0);
+        // this.wheels.scale.set(2);
+        // this.turret.scale.set(2);
         this.add(this.wheels);
         this.add(this.turret);
-        this.wheels.frame_rate = 8;
-        this.turret.shoot_rate = 2;
+        this.wheels.frame_rate = 32;
+        this.turret.shoot_rate = 4;
         this.wheels.animations.add("moving",[0,1],this.wheels.frame_rate,true);
         this.turret.animations.add("shooting",[0,1],this.turret.shoot_rate,false);
         this._facing = "right"
@@ -116,7 +117,7 @@ define(['phaser'], function(Phase) {
     Tank.prototype.face_turret = function (x,y) {
         this.turret.rotation = Math.atan2(y-this.turret.y,x-this.turret.x);
         this.turret.rotation -= Math.PI/2;
-        this.turret.rotation = Math.round(this.turret.rotation / (Math.PI/2))*(Math.PI/2);
+        this.turret.rotation = Math.round(this.turret.rotation / (Math.PI/4))*(Math.PI/4);
     }
     Tank.prototype.rest = function () {
         this.wheels.body.velocity.set(0);

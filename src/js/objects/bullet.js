@@ -38,7 +38,7 @@ define(['phaser'], function(Phase) {
         var d = Math.sqrt(dx*dx+dy*dy);
         var dur = d / this.speed;
         console.log(dur);
-        var maximum = 1+(d / 100.);
+        var maximum = 1+(d / 200.);
         var height_tween = this.game.add.tween(this.scale).to({x:maximum,y:maximum}, 1000 * dur / 2, "Linear");
         var height_tween_back = this.game.add.tween(this.scale).to({x:1,y:1}, 1000 * dur / 2, "Linear");
         height_tween.chain(height_tween_back);
