@@ -1,6 +1,6 @@
 'use strict';
 
-define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui'], function(Tanks,Tank,Bullseye,Ui) {
+define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui', 'objects/bullets'], function(Tanks,Tank,Bullseye,Ui,Bullets) {
     function GameplayState() {}
 
     GameplayState.prototype = {
@@ -11,12 +11,16 @@ define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui'], functi
             // click causes tank to shoot
             // bullet flies in parable, height causes upscaling, simply use tween?
             this.tanks = new Tanks(this.game);
+            this.bullets = new Bullets(this.game);
             this.ui = new Ui(this.game);
             this.bullseye = new Bullseye(this.game,0,0);
             this.ui.add(this.bullseye);
             this.tank = this.tanks.add_tank(100,100);
 
             this.cursors = this.input.keyboard.createCursorKeys();
+
+            this.fire_interval = 100;
+            this.last_fire_time = this.game.time.time;
         },
 
         update: function() {
@@ -34,10 +38,10 @@ define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui'], functi
             } else {
                 this.tank.rest();
             }
-
-            // if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-            //     this.weapons[this.currentWeapon].fire(this.player);
-            // }
+            if(this.game.input.mousePointer.isDown && (this.game.time.time > this.last_fire_time + this.fire_interval) ){
+                this.bullets.add_bullet(this.tank.x,this.tank.y).fire(this.game.input.x, this.game.input.y);
+                this.last_fire_time = this.game.time.time;
+            }
             this.bullseye.x = this.game.input.x;
             this.bullseye.y = this.game.input.y;
         }
