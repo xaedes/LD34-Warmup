@@ -42,18 +42,25 @@ define(['phaser'], function(Phaser) {
         },
 
         tweenPlayState: function() {
-            var tweenMenuShrink = this.game.add.tween(this.menu)
-                    .to({x: 0, y: 0,alpha: 0.5}, 200);
+            var selectionFeedback = this.game.add.tween(this.subtitle_text.scale)
+            .to({x:1.5 , y:1.5},500,"Elastic.easeOut");
+            selectionFeedback.onComplete.add(function(){
+                var tweenMenuShrink = this.game.add.tween(this.menu)
+                        .to({x: 0, y: 0,alpha: 0.1}, 200);
 
-            var tweenFadeIn = this.game.add.tween(this.menu)
-                    .to({alpha: 0}, 2000);
+                var tweenFadeIn = this.game.add.tween(this.menu)
+                        .to({alpha: 0}, 200);
 
-            tweenFadeIn.onComplete.add(function() {
-                this.game.state.start('level-master');
-            }, this);
-            
-            tweenMenuShrink.chain(tweenFadeIn);
-            tweenMenuShrink.start();
+                tweenFadeIn.onComplete.add(function() {
+                    this.game.state.start('level-master');
+                }, this);
+                
+                tweenMenuShrink.chain(tweenFadeIn);
+                tweenMenuShrink.start();                
+            }, this)
+            selectionFeedback.start()
+
+
         }
     };
 

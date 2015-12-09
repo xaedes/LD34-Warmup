@@ -20,7 +20,7 @@ define(['phaser'], function(Phaser) {
         
         tweenFadeState: function(title_text) {
             this.game.add.tween(title_text)
-                .to({alpha: 1}, 2000,"Cubic.easeOut",true)
+                .to({alpha: 1}, 1000,"Cubic.easeOut",true)
                 .onComplete.add(function() {
                     this.game.state.start('main-menu');
                 }, this);
