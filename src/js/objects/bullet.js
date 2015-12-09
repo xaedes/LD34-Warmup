@@ -53,21 +53,22 @@ define(['phaser'], function(Phase) {
         alpha_tween.start();
         height_tween.start();
         move_tween.start();
-        return this;
-    };
-
-    Bullet.prototype.update = function () {
-        // var dt = (this.game.time.time - this.last_time)/1000.;
-        // this.last_time = this.game.time.time;
-        var dx = this.target_x - this.x;
-        var dy = this.target_y - this.y;
-        var d = Math.sqrt(dx*dx+dy*dy);
         this.body.velocity.set(0);
         if(d>0){
             this.rotation = Math.atan2(dy, dx);
             this.rotation -= Math.PI/2;
             this.rotation = Math.round(this.rotation / (Math.PI/8))*(Math.PI/8);
         }
+        return this;
+    };
+
+    Bullet.prototype.update = function () {
+        // var dt = (this.game.time.time - this.last_time)/1000.;
+        // this.last_time = this.game.time.time;
+        // var dx = this.target_x - this.x;
+        // var dy = this.target_y - this.y;
+        // var d = Math.sqrt(dx*dx+dy*dy);
+
     };
 
     return Bullet;

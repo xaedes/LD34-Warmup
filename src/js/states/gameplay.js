@@ -38,10 +38,17 @@ define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui', 'object
             } else {
                 this.tank.rest();
             }
-            if(this.game.input.mousePointer.isDown && (this.game.time.time > this.last_fire_time + this.fire_interval) ){
-                this.bullets.add_bullet(this.tank.x,this.tank.y).fire(this.game.input.x, this.game.input.y);
-                this.last_fire_time = this.game.time.time;
+            if(this.game.input.mousePointer.isDown){
+                this.tank.face_turret(this.game.input.x, this.game.input.y);
+                this.tank.fire(function(){
+                    this.bullets.add_bullet(this.tank.wheels.x,this.tank.wheels.y).fire(this.game.input.x, this.game.input.y);
+                },this);
+            } else {
+                this.tank.stop_fire();
             }
+            // if(this.game.input.mousePointer.isDown && (this.game.time.time > this.last_fire_time + this.fire_interval) ){
+                // this.last_fire_time = this.game.time.time;
+            // }
             this.bullseye.x = this.game.input.x;
             this.bullseye.y = this.game.input.y;
         }

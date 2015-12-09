@@ -1,37 +1,38 @@
 'use strict';
 
 define(['phaser'], function(Phase) {
-    function Tank(game, x, y) {
+    function Tank(game, x, y, parent) {
         // super constructor
-        Phaser.Sprite.call(this, game, x, y, 'tank', 0);
+        Phaser.Group.call(this, game, parent, 'tank', true, true, Phaser.Physics.ARCADE);
 
-        this.frame_rate = 8;
-        this.animations.add("down",[0,1],this.frame_rate,true);
-        this.animations.add("down-shoot",[0,7],this.frame_rate,true);
-        this.animations.add("left",[2,3],this.frame_rate,true);
-        this.animations.add("left-shoot",[2,9],this.frame_rate,true);
-        this.animations.add("right",[4,5],this.frame_rate,true);
-        this.animations.add("right-shoot",[4,8],this.frame_rate,true);
-        this.animations.add("up",[10,11],this.frame_rate,true);
-        this.animations.add("up-shoot",[10,6],this.frame_rate,true);
+        this.wheels = new Phaser.Sprite(game, x, y, 'wheels', 0);
+        this.turret = new Phaser.Sprite(game, x, y, 'turret', 0);
+        this.add(this.wheels);
+        this.add(this.turret);
+        this.wheels.frame_rate = 8;
+        this.turret.shoot_rate = 2;
+        this.wheels.animations.add("moving",[0,1],this.wheels.frame_rate,true);
+        this.turret.animations.add("shooting",[0,1],this.turret.shoot_rate,false);
         this._facing = "right"
         this._shooting = false;
         this._moving = false;
         this.manage_animation();
 
         // crisp pixels
-        this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+        // this.turret.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+        this.wheels.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
 
         // anchor to the center of the sprite
-        this.anchor.set(0.5);
+        this.turret.anchor.set(0.5);
+        this.wheels.anchor.set(0.5);
 
         this.speed = 32;
 
-        this.game.physics.arcade.enable(this);
-        this.body.collideWorldBounds = true;
+        this.game.physics.arcade.enable(this.wheels);
+        this.wheels.body.collideWorldBounds = true;
     };
 
-    Tank.prototype = Object.create(Phaser.Sprite.prototype);
+    Tank.prototype = Object.create(Phaser.Group.prototype);
     Tank.prototype.constructor = Tank;
 
     Object.defineProperty(Tank.prototype, "moving", {
@@ -64,53 +65,81 @@ define(['phaser'], function(Phase) {
         }
     });
 
-
-    Tank.prototype.current_animation_name = function () {
-        var frame = this.facing;
-        if(this.shooting){
-            frame += "-shoot";
-        }
-        return frame;
-    };
-
     Tank.prototype.manage_animation = function () {
-        var frame = this.current_animation_name();
-        this.animations.play(frame);
+        this.wheels.animations.play("moving");
+        this.turret.animations.play("shooting");
+
+
         if(!this.moving){
-            this.animations.stop();
+            this.wheels.animations.stop();
+        }
+        if(!this.shooting){
+            this.turret.animations.stop();
+        }
+
+
+        if(this._facing == "left"){
+            this.wheels.rotation = Math.atan2(-1,0);
+        } else if(this._facing == "right"){
+            this.wheels.rotation = Math.atan2(+1,0);
+        } else if(this._facing == "up"){
+            this.wheels.rotation = Math.atan2(0,-1);
+        } else if(this._facing == "down"){
+            this.wheels.rotation = Math.atan2(0,+1);
         }
     };
 
     Tank.prototype.move = function (direction) {
-        this.body.velocity.set(0);
+        this.wheels.body.velocity.set(0);
         if (direction == "left") {
             this.facing = direction;
             this.moving = true;
-            this.body.velocity.x = -this.speed;
+            this.wheels.body.velocity.x = -this.speed;
         }
         else if (direction == "right") {
             this.facing = direction;
             this.moving = true;
-            this.body.velocity.x = +this.speed;
+            this.wheels.body.velocity.x = +this.speed;
         }
         else if (direction == "up") {
             this.facing = direction;
             this.moving = true;
-            this.body.velocity.y = -this.speed;
+            this.wheels.body.velocity.y = -this.speed;
         }
         else if (direction == "down") {
             this.facing = direction;
             this.moving = true;
-            this.body.velocity.y = +this.speed;
+            this.wheels.body.velocity.y = +this.speed;
         }
     };
+
+    Tank.prototype.face_turret = function (x,y) {
+        this.turret.rotation = Math.atan2(y-this.turret.y,x-this.turret.x);
+        this.turret.rotation -= Math.PI/2;
+        this.turret.rotation = Math.round(this.turret.rotation / (Math.PI/2))*(Math.PI/2);
+    }
     Tank.prototype.rest = function () {
-        this.body.velocity.set(0);
+        this.wheels.body.velocity.set(0);
         this.moving = false;
     }
+    Tank.prototype.fire = function (callback,obj) {
+        if(!this.shooting){
+            this.turret.animations.currentAnim.onComplete.add(function(){
+                this.shooting = false;
+                callback.call(obj);
+            },this);
+            this.shooting = true;
+        }
+    }
+    Tank.prototype.stop_fire = function () {
+        this.shooting = false;
+    }
 
-    // Tank.prototype.update = function () {
-    // };
+
+    Tank.prototype.update = function () {
+        this.turret.x = this.wheels.x;
+        this.turret.y = this.wheels.y;
+    };
 
     return Tank;
 });
