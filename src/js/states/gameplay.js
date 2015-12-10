@@ -59,7 +59,9 @@ define(['phaser','objects/tanks','objects/tank','objects/bullseye', 'objects/ui'
             this.bullseye.x = this.game.input.x;
             this.bullseye.y = this.game.input.y;
 
-            Phaser.physics.arcade.collide(this.tanks, this.explosions, function());
+            this.game.physics.arcade.overlap(this.tanks, this.explosions, function(tank,explosion){
+                tank.exists = false;
+            });
         }
     };
 

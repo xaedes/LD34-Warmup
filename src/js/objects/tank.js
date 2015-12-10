@@ -124,6 +124,7 @@ define(['phaser'], function(Phaser) {
         this.moving = false;
     };
     Tank.prototype.fire = function (callback,obj) {
+        if(!this.exists) return;
         if(!this.shooting){
             this.turret.animations.currentAnim.onComplete.addOnce(function(){
                 this.shooting = false;
