@@ -14,7 +14,7 @@ define(['phaser'], function(Phase) {
         this.turret.shoot_rate = 4;
         this.wheels.animations.add("moving",[0,1],this.wheels.frame_rate,true);
         this.turret.animations.add("shooting",[0,1],this.turret.shoot_rate,false);
-        this._facing = "right"
+        this._facing = "right";
         this._shooting = false;
         this._moving = false;
         this.manage_animation();
