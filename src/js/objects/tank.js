@@ -11,7 +11,7 @@ define(['phaser'], function(Phase) {
         this.add(this.wheels);
         this.add(this.turret);
         this.wheels.frame_rate = 32;
-        this.turret.shoot_rate = 4;
+        this.turret.shoot_rate = 8;
         this.wheels.animations.add("moving",[0,1],this.wheels.frame_rate,true);
         this.turret.animations.add("shooting",[0,1],this.turret.shoot_rate,false);
         this._facing = "right";
@@ -125,7 +125,7 @@ define(['phaser'], function(Phase) {
     }
     Tank.prototype.fire = function (callback,obj) {
         if(!this.shooting){
-            this.turret.animations.currentAnim.onComplete.add(function(){
+            this.turret.animations.currentAnim.onComplete.addOnce(function(){
                 this.shooting = false;
                 callback.call(obj);
             },this);

@@ -1,9 +1,9 @@
 'use strict';
 
 define(['phaser'], function(Phase) {
-    function Bullet(game, x, y) {
+    function Bullet(game) {
         // super constructor
-        Phaser.Sprite.call(this, game, x, y, 'bullets', 0);
+        Phaser.Sprite.call(this, game, 0, 0, 'bullets', 0);
 
         this.frame_rate = 8;
         this.animations.add("bullet",[0],this.frame_rate,true);
@@ -18,13 +18,18 @@ define(['phaser'], function(Phase) {
         this.speed = 128.;
         this.last_time = this.game.time.time;
 
-        this.game.physics.arcade.enable(this);
-        this.body.collideWorldBounds = true;
+        this.exists = false;
     };
 
     Bullet.prototype = Object.create(Phaser.Sprite.prototype);
     Bullet.prototype.constructor = Bullet;
 
+
+    Bullet.prototype.reset_reusable = function () {
+        this.exists = true;
+        this.animations.stop(null,false);
+        return this;
+    };
 
     Bullet.prototype.manage_animation = function () {
         this.animations.play("bullet");
@@ -37,7 +42,6 @@ define(['phaser'], function(Phase) {
         var dy = this.target_y - this.y;
         var d = Math.sqrt(dx*dx+dy*dy);
         var dur = d / this.speed;
-        console.log(dur);
         var maximum = 1+(d / 200.);
         var height_tween = this.game.add.tween(this.scale).to({x:maximum,y:maximum}, 1000 * dur / 2, "Linear");
         var height_tween_back = this.game.add.tween(this.scale).to({x:1,y:1}, 1000 * dur / 2, "Linear");
@@ -47,10 +51,12 @@ define(['phaser'], function(Phase) {
         alpha_tween.chain(alpha_tween_back);
         var move_tween = this.game.add.tween(this)
                 .to({x:this.target_x,y:this.target_y}, 1000 * dur, "Linear");
-        move_tween.onComplete.add(function() {
+
+        move_tween.onComplete.addOnce(function() {
             callback.call(callback_obj,this,this.target_x,this.target_y);
-            this.destroy();
+            this.exists = false;
         }, this);
+
         alpha_tween.start();
         height_tween.start();
         move_tween.start();
@@ -63,14 +69,6 @@ define(['phaser'], function(Phase) {
         return this;
     };
 
-    Bullet.prototype.update = function () {
-        // var dt = (this.game.time.time - this.last_time)/1000.;
-        // this.last_time = this.game.time.time;
-        // var dx = this.target_x - this.x;
-        // var dy = this.target_y - this.y;
-        // var d = Math.sqrt(dx*dx+dy*dy);
-
-    };
 
     return Bullet;
 });

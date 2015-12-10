@@ -10,8 +10,15 @@ define(['phaser','objects/explosion'], function(Phase,Explosion) {
 
 
     Explosions.prototype.add_explosion = function (x, y, rotation) {
-        var explosion = new Explosion(this.game, x, y, rotation);
-        this.add(explosion);
+        var explosion = this.getFirstExists(false);
+        if(explosion === null){
+            explosion = new Explosion(this.game);
+            this.add(explosion);
+        }
+        explosion.reset_reusable().reset(x,y);
+        explosion.rotation = rotation;
+        explosion.animations.play("explosion");
+
         return explosion;
     };
 
