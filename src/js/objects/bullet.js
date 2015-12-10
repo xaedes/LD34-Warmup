@@ -48,8 +48,8 @@ define(['phaser'], function(Phase) {
         var move_tween = this.game.add.tween(this)
                 .to({x:this.target_x,y:this.target_y}, 1000 * dur, "Linear");
         move_tween.onComplete.add(function() {
-            this.destroy();
             callback.call(callback_obj,this,this.target_x,this.target_y);
+            this.destroy();
         }, this);
         alpha_tween.start();
         height_tween.start();
