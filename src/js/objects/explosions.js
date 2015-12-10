@@ -1,6 +1,6 @@
 'use strict';
 
-define(['phaser','objects/explosion'], function(Phase,Explosion) {
+define(['phaser','objects/explosion'], function(Phaser,Explosion) {
     function Explosions(game) {
         Phaser.Group.call(this, game, game.world, 'explosions', true, true, Phaser.Physics.ARCADE);
         this.scale.set(2);

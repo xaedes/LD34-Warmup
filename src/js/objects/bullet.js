@@ -1,6 +1,6 @@
 'use strict';
 
-define(['phaser'], function(Phase) {
+define(['phaser'], function(Phaser) {
     function Bullet(game) {
         // super constructor
         Phaser.Sprite.call(this, game, 0, 0, 'bullets', 0);

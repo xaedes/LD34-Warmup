@@ -1,7 +1,7 @@
 'use strict';
 
-define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui', 'objects/bullets', 'objects/explosions'], 
-    function(Tanks,Tank,Bullseye,Ui,Bullets,Explosions) {
+define(['phaser','objects/tanks','objects/tank','objects/bullseye', 'objects/ui', 'objects/bullets', 'objects/explosions'], 
+    function(Phaser,Tanks,Tank,Bullseye,Ui,Bullets,Explosions) {
     function GameplayState() {}
 
     GameplayState.prototype = {
@@ -58,6 +58,8 @@ define(['objects/tanks','objects/tank','objects/bullseye', 'objects/ui', 'object
             // }
             this.bullseye.x = this.game.input.x;
             this.bullseye.y = this.game.input.y;
+
+            Phaser.physics.arcade.collide(this.tanks, this.explosions, function());
         }
     };
 

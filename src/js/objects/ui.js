@@ -1,6 +1,6 @@
 'use strict';
 
-define(['phaser'], function(Phase) {
+define(['phaser'], function(Phaser) {
     function Ui(game) {
         Phaser.Group.call(this, game, game.world, 'ui', true, true);
     };

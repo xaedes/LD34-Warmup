@@ -1,6 +1,6 @@
 'use strict';
 
-define(['phaser'], function(Phase) {
+define(['phaser'], function(Phaser) {
     function Tank(game, x, y, parent) {
         // super constructor
         Phaser.Group.call(this, game, parent, 'tank', true, true, Phaser.Physics.ARCADE);
