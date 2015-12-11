@@ -25,7 +25,6 @@ define(['phaser'], function(Phaser) {
         this.animations.stop("explosion",false);
         this.animations.currentAnim.onComplete.addOnce(function(){
             this.exists = false;
-            console.log(1);
             // this.animations.currentAnim.setFrame(0);
         }, this);
         return this;

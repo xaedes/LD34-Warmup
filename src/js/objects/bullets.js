@@ -17,7 +17,6 @@ define(['phaser','objects/bullet'], function(Phaser,Bullet) {
             this.add(bullet);
         }
         bullet.reset_reusable().reset(x,y);
-        console.log("bullet");
         return bullet;
     };
 
