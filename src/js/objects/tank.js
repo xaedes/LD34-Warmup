@@ -31,7 +31,7 @@ define(['phaser'], function(Phase) {
 
         this.game.physics.arcade.enable(this.wheels);
         this.wheels.body.collideWorldBounds = true;
-    };
+    }
 
     Tank.prototype = Object.create(Phaser.Group.prototype);
     Tank.prototype.constructor = Tank;
@@ -118,11 +118,11 @@ define(['phaser'], function(Phase) {
         this.turret.rotation = Math.atan2(y-this.turret.y,x-this.turret.x);
         this.turret.rotation -= Math.PI/2;
         this.turret.rotation = Math.round(this.turret.rotation / (Math.PI/4))*(Math.PI/4);
-    }
+    };
     Tank.prototype.rest = function () {
         this.wheels.body.velocity.set(0);
         this.moving = false;
-    }
+    };
     Tank.prototype.fire = function (callback,obj) {
         if(!this.shooting){
             this.turret.animations.currentAnim.onComplete.addOnce(function(){
@@ -131,10 +131,10 @@ define(['phaser'], function(Phase) {
             },this);
             this.shooting = true;
         }
-    }
+    };
     Tank.prototype.stop_fire = function () {
         this.shooting = false;
-    }
+    };
 
 
     Tank.prototype.update = function () {

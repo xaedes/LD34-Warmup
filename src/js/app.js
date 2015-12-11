@@ -1,5 +1,6 @@
 define([
     'phaser',
+    'socketio',
     'states/boot',
     'states/preload',
     'states/main_intro',
@@ -7,6 +8,7 @@ define([
     'states/level_master',
     'states/gameplay'],
     function(Phaser,
+             io,
              BootState,
              PreloadState,
              MainIntroState,
@@ -38,6 +40,11 @@ define([
             // game.state.add('level-round', LevelRoundState);
 
             game.state.start('boot');
+
+            var socket = io('http://localhost:3000');
+            //socket.on('connect', function(){});
+            // socket.on('event', function(data){});
+            // socket.on('disconnect', function(){});
         }
     };
 
