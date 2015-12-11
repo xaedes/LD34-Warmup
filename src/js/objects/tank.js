@@ -113,9 +113,9 @@ define(['phaser'], function(Phaser) {
     };
 
     Tank.prototype.face_turret = function (x,y) {
-        this.turret.rotation = Math.atan2(y-this.turret.y,x-this.turret.x);
+        this.turret.rotation = Math.atan2(this.y-y,this.x-x);
         this.turret.rotation -= Math.PI/2;
-        this.turret.rotation -= this.rotation;
+        this.turret.rotation += this.rotation;
         this.turret.rotation = Math.round(this.turret.rotation / (Math.PI/4))*(Math.PI/4);
     };
     Tank.prototype.rest = function () {
