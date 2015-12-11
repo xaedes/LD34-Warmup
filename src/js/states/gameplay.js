@@ -45,7 +45,7 @@ define(['phaser','objects/tanks','objects/tank','objects/bullseye', 'objects/ui'
             if(this.game.input.mousePointer.isDown){
                 this.tank.face_turret(this.game.input.x/2, this.game.input.y/2);
                 this.tank.fire(function(){
-                    this.bullets.add_bullet(this.tank.wheels.x,this.tank.wheels.y)
+                    this.bullets.add_bullet(this.tank.x,this.tank.y)
                                 .fire(this.game.input.x/2, this.game.input.y/2, function(bullet,x,y){
                                     this.explosions.add_explosion(x,y,bullet.rotation);
                                 }, this);
@@ -59,7 +59,7 @@ define(['phaser','objects/tanks','objects/tank','objects/bullseye', 'objects/ui'
             this.bullseye.x = this.game.input.x;
             this.bullseye.y = this.game.input.y;
 
-            this.game.physics.arcade.overlap(this.tanks, this.explosions, function(tank,explosion){
+            this.game.physics.arcade.collide(this.tanks, this.explosions, function(tank,explosion){
                 tank.exists = false;
             });
         }
